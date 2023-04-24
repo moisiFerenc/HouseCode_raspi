@@ -24,25 +24,23 @@ import serial
 # read the string from the arduino
 RAWmessage = " "
 massage = [0] * 12
-#the message container is 11 bytes long
+
 
 def readArduino():
-    while True:
-        if __name__ == '__main__':
+    if __name__ == '__main__':
+        for i in range(12):
+            massage[i] = 2
+    else:
+        ser = serial.Serial('COM10', 9600)
+        #while True:
+        if ser.inWaiting() > 0:
+            line = ser.readline()
+            line = str(line)
+            line = line[2:-5]
+            line = line.split("--")
             for i in range(12):
-                massage[i] = 2
-                time.sleep(1)
-        else:
-            ser = serial.Serial('COM10', 9600)
-            #while True:
-            if ser.inWaiting() > 0:
-                line = ser.readline()
-                line = str(line)
-                line = line[2:-5]
-                line = line.split("--")
-                for i in range(12):
-                    massage[i] = line[i]
-                    time.sleep(1)
+                massage[i] = line[i]
+
 
 
 
@@ -68,32 +66,24 @@ def register(debug=True):
 
 @app.route("/controlpanel")
 def controlpanel(debug=True):
-
+    readArduino()
 
     ultrasonic_sensor_val = massage[0]
-    photo_resistor_val    = massage[1]
-    temperature_val       = massage[2]
-    humidity_sensor       = massage[3]
-    temperature_F_val     = massage[4]
-    lamp_1_state          = massage[5]
-    lamp_2_state          = massage[6]
-    lamp_3_state          = massage[7]
+    photo_resistor_val = massage[1]
+    temperature_val = massage[2]
+    humidity_sensor = massage[3]
+    temperature_F_val = massage[4]
+    lamp_1_state = massage[5]
+    lamp_2_state = massage[6]
+    lamp_3_state = massage[7]
     air_conditioner_state = massage[8]
-    garage_door_state     = massage[9]
-    door_state            = massage[10]
-    solar_panel_state     = massage[11]
+    garage_door_state = massage[9]
+    door_state = massage[10]
+    solar_panel_state = massage[11]
     return render_template("controlpanel.html", ultrasonic_sensor_var = ultrasonic_sensor_val, humidity_sensor = humidity_sensor,  photo_resistor_var = photo_resistor_val, temperature_F_var = temperature_F_val, temperature_var = temperature_val, lamp_1_state_var = lamp_1_state, lamp_2_state_var = lamp_2_state,  lamp_3_state_var = lamp_3_state, air_conditioner_state_var = air_conditioner_state, garage_door_state_var = garage_door_state, door_state_var = door_state, solar_panel_state_var = solar_panel_state)
 
 
 
 if __name__ == "__main__":
-    # Osztott memória létrehozása
-    massage = mp.Array('i', [0,0,0,0,0,0,0,0,0,0,0,0])
-
-    # Szenzor olvasó folyamat elindítása
-    p = mp.Process(target=readArduino, args=(massage,))
-    p.start()
-
-    # Flask alkalmazás futtatása
     app.run(debug=True)
 
