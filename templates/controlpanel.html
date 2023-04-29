@@ -1,6 +1,7 @@
 
 <html>
     <head>
+
       <style>
   
         .form {
@@ -82,18 +83,24 @@
             background: #09f;
           }
   
-      /* tablazatok */
-          
-
-</style>
-  
+        /* tablazatok */
+      </style>
+      <script>
+        function handleFormSubmit(form) {
+            var xhr = new XMLHttpRequest();
+            var formData = new FormData(form);
+            xhr.open("POST", "/checkboxes", true);
+            xhr.send(formData);
+            return false;
+        }
+      </script>
     </head>
     <body>
       <!-- HouseCode Controll center ase a title -->
       <h1>HouseCode Control Center</h1>
       <div class="login-page">
         <div class="form">
-          <form class="login-form">
+          <form class="login-form" onsubmit="return handleFormSubmit(this)">
               <!-- <label for="checkbox">Nappali szoba</label> -->
               <!-- <input type="checkbox" id="checkbox"> -->
   
@@ -119,38 +126,38 @@
                   <tr>
                     <td class="tg-0lax">Zarak:</td>
                     <td class="tg-0lax">Bejarati ajto</td>
-                    <td class="tg-0lax"><input type="checkbox" id="bejaratiajto"></td>
+                    <td class="tg-0lax"><input type="checkbox" name="my_checkbox" id="bejaratiajto" value="0"></td>
                   </tr>
                   <tr>
                     <td class="tg-0lax"></td>
                     <td class="tg-0lax">Garazsajto</td>
-                    <td class="tg-0lax"><input type="checkbox" id="garazsajto"></td>
+                    <td class="tg-0lax"><input type="checkbox" name="my_checkbox" id="garazsajto" value="1"></td>
                   </tr>
                   
                   <tr>
                     <td class="tg-0lax">Fenyek:</td>
                     <td class="tg-0lax">Nappali</td>
-                    <td class="tg-0lax"><input type="checkbox" id="Nappali_lampa"></td>
+                    <td class="tg-0lax"><input type="checkbox" name="my_checkbox" id="Nappali_lampa" value="2"></td>
                   </tr>
                   <tr>
                     <td class="tg-0lax"></td>
                     <td class="tg-0lax">Konyha</td>
-                    <td class="tg-0lax"><input type="checkbox" id="konyha_lampa"></td>
+                    <td class="tg-0lax"><input type="checkbox" name="my_checkbox" id="konyha_lampa" value="3"></td>
                   </tr>
                   <tr>
                     <td class="tg-0lax"></td>
                     <td class="tg-0lax">Szoba</td>
-                    <td class="tg-0lax"><input type="checkbox" id="szoba_lampa"></td>
+                    <td class="tg-0lax"><input type="checkbox" name="my_checkbox" id="szoba_lampa" value="4"></td>
                   </tr>
                   <tr>
                     <td class="tg-0lax"></td>
                     <td class="tg-0lax">Osszes kikapcsolasa</td>
-                    <td class="tg-0lax"><input type="checkbox" id="kikapcs_mind_lampa"></td>
+                    <td class="tg-0lax"><input type="checkbox" id="kikapcs_mind_lampa" value="5"></td>
                   </tr>
                   <tr>
                     <td class="tg-0lax"></td>
                     <td class="tg-0lax">Osszes Bekapcsolas</td>
-                    <td class="tg-0lax"> <input type="checkbox" id="bekapcs_mind_lampa"></td>
+                    <td class="tg-0lax"> <input type="checkbox" name="my_checkbox" id="bekapcs_mind_lampa" value="6"></td>
                   </tr>
                   <tr>
                     <td class="tg-0lax">Homerseklet:</td>
@@ -170,7 +177,7 @@
                   <tr>
                     <td class="tg-0lax"></td>
                     <td class="tg-0lax">Ventillator statusz</td>
-                    <td class="tg-0lax"><input type="checkbox" id="dc_motor"></td>
+                    <td class="tg-0lax"><input type="checkbox" name="my_checkbox" id="dc_motor" value="7"></td>
                   </tr>
                   <tr>
                     <td class="tg-0lax">Napelem statusz:</td>
@@ -185,7 +192,7 @@
                 </tbody>
                 </table>
                   
-  
+                <button type="submit">Submit</button>
           </form>
         </div>
       </div>

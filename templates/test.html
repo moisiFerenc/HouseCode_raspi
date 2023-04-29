@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Console Print Control</title>
+    <script>
+        function handleFormSubmit(form) {
+            var xhr = new XMLHttpRequest();
+            var formData = new FormData(form);
+            xhr.open("POST", "/checkboxes", true);
+            xhr.send(formData);
+            return false;
+        }
+    </script>
+</head>
+<body>
+    <h1>Console Print Control</h1>
+    <form onsubmit="return handleFormSubmit(this)">
+        <label>
+            <input type="checkbox" name="my_checkbox" value="1">
+            Print 1
+        </label>
+        <label>
+            <input type="checkbox" name="my_checkbox" value="2">
+            Print 2
+        </label>
+        <label>
+            <input type="checkbox" name="my_checkbox" value="3">
+            Print 3
+        </label>
+        <button type="submit">Submit</button>
+    </form>
+</body>
+</html>

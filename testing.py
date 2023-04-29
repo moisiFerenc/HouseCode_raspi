@@ -1,28 +1,17 @@
-import time
-from random import randint
-import requests as requests
-from flask import Flask
-
+from flask import Flask, render_template, request
 
 app = Flask(__name__)
 
+@app.route("/")
+def index():
+    return render_template('test.html')
 
-def get_xkcd_image():
-    random = randint(0, 300)
-    response = requests.get(f'http://xkcd.com/{random}/info.0.json')
-    return response.json()['img']
+@app.route("/checkboxes", methods=['POST'])
+def handle_checkboxes():
+    checkboxes_values = request.form.getlist('my_checkbox')
+    for value in checkboxes_values:
+        print(value)
+    return ''
 
-
-@app.get('/comic')
-def hello():
-    start = time.perf_counter()
-    url = get_xkcd_image()
-    end = time.perf_counter()
-    return f"""
-        Time taken: {end-start}<br><br>
-        <img src="{url}"></img>
-    """
-
-
-if __name__ == '__main__':
-    app.run(debug=True)
+if __name__ == "__main__":
+    app.run(host='0.0.0.0', port=80, debug=True)

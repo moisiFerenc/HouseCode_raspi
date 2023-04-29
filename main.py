@@ -14,8 +14,8 @@
 #
 #####################################################################
 
-from flask import Flask, render_template
-from flask_login import UserMixin
+from flask import Flask, render_template, request
+from flask_login import UserMixin, LoginManager
 from flask_sqlalchemy import SQLAlchemy
 import time
 import multiprocessing as mp
@@ -82,7 +82,12 @@ def controlpanel(debug=True):
     solar_panel_state = massage[11]
     return render_template("controlpanel.html", ultrasonic_sensor_var = ultrasonic_sensor_val, humidity_sensor = humidity_sensor,  photo_resistor_var = photo_resistor_val, temperature_F_var = temperature_F_val, temperature_var = temperature_val, lamp_1_state_var = lamp_1_state, lamp_2_state_var = lamp_2_state,  lamp_3_state_var = lamp_3_state, air_conditioner_state_var = air_conditioner_state, garage_door_state_var = garage_door_state, door_state_var = door_state, solar_panel_state_var = solar_panel_state)
 
-
+@app.route("/checkboxes", methods=['POST'])
+def handle_checkboxes():
+    checkboxes_values = request.form.getlist('my_checkbox')
+    for value in checkboxes_values:
+        print(value)
+    return ''
 
 if __name__ == "__main__":
     app.run(debug=True)
