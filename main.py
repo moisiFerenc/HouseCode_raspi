@@ -20,11 +20,14 @@ from flask_sqlalchemy import SQLAlchemy
 import time
 import multiprocessing as mp
 import serial
+import flask_bcrypt as Bcrypt
 
 # read the string from the arduino
 RAWmessage = " "
 massage = [0] * 12
 
+#bcrypt = Bcrypt(app) # create an instance of the class
+bcrypt = Bcrypt.Bcrypt()
 
 def readArduino():
     if __name__ == '__main__':
@@ -45,20 +48,15 @@ def readArduino():
 
 
 app = Flask(__name__)
-db = SQLAlchemy()
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
-app.config['SECRET_KEY'] = 'secret'
 
 
-db.init_app(app)
-class User(UserMixin, db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(20), unique=True)
-    password = db.Column(db.String(80))
-
-@app.route("/login")
-def index(debug=True):
+@app.route("/")
+def login(debug=True):
     return render_template("login.html")
+
+@app.route("/managment")
+def manage(debug=True):
+    return render_template("manage.html")
 
 @app.route("/register")
 def register(debug=True):

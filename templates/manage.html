@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>User Profile Selector</title>
+	<style>
+		body {
+			font-family: Arial, sans-serif;
+		}
+
+		.container {
+			max-width: 800px;
+			margin: 0 auto;
+			padding: 20px;
+		}
+
+		h1 {
+			text-align: center;
+			margin-bottom: 30px;
+		}
+
+		.profile-selector {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			flex-wrap: wrap;
+			margin-bottom: 50px;
+		}
+
+		.profile {
+			width: 150px;
+			height: 150px;
+			margin: 10px;
+			border-radius: 50%;
+			background-size: cover;
+			background-position: center center;
+			cursor: pointer;
+			transition: transform .3s;
+		}
+
+		.profile:hover {
+			transform: scale(1.1);
+		}
+
+		.profile:nth-child(1) {
+			background-image: url('https://i.imgur.com/4HP8NGK.png');
+		}
+
+		.profile:nth-child(2) {
+			background-image: url('https://i.imgur.com/JE2sDKh.png');
+		}
+
+		.profile:nth-child(3) {
+			background-image: url('https://i.imgur.com/5GW8AEy.png');
+		}
+
+		.profile:nth-child(4) {
+			background-image: url('https://i.imgur.com/n7EbguT.png');
+		}
+
+		.profile:nth-child(5) {
+			background-image: url('https://i.imgur.com/VzyGtQt.png');
+		}
+
+		.profile:nth-child(6) {
+			background-image: url('https://i.imgur.com/j7d4PaX.png');
+		}
+
+		.profile-name {
+			text-align: center;
+			font-weight: bold;
+			margin-top: 10px;
+		}
+
+		.active-profile {
+			transform: scale(1.2);
+			border: 10px solid purple;
+		}
+
+		body {
+        background: #5f76c2; /* fallback for old browsers */
+        background: -webkit-linear-gradient(right, #8f9fd3, #1a008f);
+        background: -moz-linear-gradient(right, #425285, #1a008f);
+        background: -o-linear-gradient(right, #22293d, #1a008f);
+        background: linear-gradient(to left, #131620, #1a008f);
+        font-family: "Roboto", sans-serif;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+	</style>
+</head>
+<body>
+	<div class="container">
+		<h1>User Profile Selector</h1>
+
+		<div class="profile-selector">
+			<div class="profile active-profile"></div>
+			<div class="profile"></div>
+			<div class="profile"></div>
+			<div class="profile"></div>
+			<div class="profile"></div>
+			<div class="profile"></div>
+		</div>
+
+		<div class="profile-name">Profile 1</div>
+	</div>
+
+	<div class="password-field">
+		<input type="password" placeholder="Add meg a jelszavad">
+	</div>
+
+	<script>
+	
+		// Get all profile elements
+		const profiles = document.querySelectorAll('.profile');
+
+		// Add click event listener to each profile
+		profiles.forEach(profile => {
+			profile.addEventListener('click', () => {
+				// Remove active class from all profiles
+				profiles.forEach(profile => {
+					profile.classList.remove('active-profile');
+				});
+
+				// Add active class to clicked profile
+				profile.classList.add('active-profile');
+
+				// Update profile name
+				const profileName = document.querySelector('.profile-name');
+				profileName.textContent = profile.getAttribute('data-name');
+			});
+		});
+	</script>
+</body>
+</html>
