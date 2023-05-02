@@ -13,10 +13,13 @@
 # 
 #
 #####################################################################
-
-from flask import Flask, render_template, request
-from flask_login import UserMixin, LoginManager
+from my_project import app, db
+from flask import Flask, render_template, request, redirect, url_for, flash,abort
+from flask_login import UserMixin, LoginManager, login_manager, login_user, login_required, logout_user, current_user
 from flask_sqlalchemy import SQLAlchemy
+from my_project.models import User
+from my_project.forms import LoginForm, RegistrationForm
+from werkzeug.security import generate_password_hash, check_password_hash
 import time
 import multiprocessing as mp
 import serial
@@ -26,8 +29,6 @@ import flask_bcrypt as Bcrypt
 RAWmessage = " "
 massage = [0] * 12
 
-#bcrypt = Bcrypt(app) # create an instance of the class
-bcrypt = Bcrypt.Bcrypt()
 
 def readArduino():
     if __name__ == '__main__':
@@ -51,18 +52,44 @@ def readArduino():
 
 
 @app.route("/")
+def welcome(debug=True):
+    return render_template("welcome.html")
+
+@app.route("/login", methods=['GET', 'POST'])
 def login(debug=True):
-    return render_template("login.html")
+    form = LoginForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(email=form.email.data).first()
+        if user.check_password(form.password.data) and user is not None:
+            login_user(user)
+            flash("Login Success!")
+            next = request.args.get('next')
+            if next == None or not next[0] == '/':
+                next = url_for('controlpanel')
+            return redirect(next)
+    return render_template("login.html", form=form)
 
 @app.route("/managment")
 def manage(debug=True):
     return render_template("manage.html")
 
-@app.route("/register")
+@app.route("/register", methods=['GET', 'POST'])
 def register(debug=True):
-    return render_template("register.html")
+    form = RegistrationForm()
+
+    if form.validate_on_submit():
+        user = User(email=form.email.data, username=form.username.data, password=form.password.data)
+        db.session.add(user)
+        db.session.commit()
+        flash("Thanks for registration!")
+        return redirect(url_for('login'))
+
+    return render_template("register.html", form=form)
+
+
 
 @app.route("/controlpanel")
+@login_required
 def controlpanel(debug=True):
     readArduino()
 
@@ -86,6 +113,14 @@ def handle_checkboxes():
     for value in checkboxes_values:
         print(value)
     return ''
+
+@app.route("/logut")
+@login_required
+def logout():
+    logout_user()
+    flash("You logged out!")
+    return redirect(url_for('welcome'))
+
 
 if __name__ == "__main__":
     app.run(debug=True)

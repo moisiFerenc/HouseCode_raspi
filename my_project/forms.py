@@ -4,6 +4,14 @@ from wtforms import StringField, PasswordField, SubmitField, BooleanField, Integ
 from wtforms.validators import DataRequired, Email, EqualTo
 from wtforms import ValidationError
 
+from my_project.models import User
+
+
+class LoginForm(FlaskForm):
+    email = StringField('Email',validators=[DataRequired(),Email()])
+    password = PasswordField('Password',validators=[DataRequired()])
+    submit = SubmitField('Log in')
+
 class RegistrationForm(FlaskForm):
     email = StringField('Email',validators=[DataRequired(),Email()])
     username = StringField('Username',validators=[DataRequired()])
@@ -11,11 +19,11 @@ class RegistrationForm(FlaskForm):
     pass_confirm = PasswordField('Confirm password',validators=[DataRequired()])
     submit = SubmitField('Register!')
 
-    def check_email(self,field):
-        if User.query.filter_by(email=field.data).first():
+    def check_email(self, field):
+        if User.query.filter_by(email=field.data).first():#####ITT LEHET EGY HIBA
             raise ValidationError('Your email has been registered already!')
 
-    def check_username(self,field):
-        if User.query.filter_by(username=field.data).first():
+    def check_username(self, field):
+        if User.query.filter_by(username=field.data).first():#####ITT LEHET EGY HIBA
             raise ValidationError('Your username has been registered already!')
 
