@@ -110,6 +110,8 @@
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
       }
+
+
 </style>
 
   </head>
@@ -118,10 +120,12 @@
     <div class="login-page">
       <div class="form">
         <form class="login-form">
-          <input type="text" placeholder="username"/>
-          <input type="password" placeholder="password"/>
+         <div class="msg">{{ msg }}</div>
+          <input id="username" name="username" type="text" placeholder="Enter Your Username" class="textbox"/></br></br>
+          <input id="password" name="password" type="password" placeholder="Enter Your Password" class="textbox"/></br></br></br>
+
           <button>login</button>
-          <p class="message">Not registered? <a href="{{url_for('register')}}">Create an account</a></p>
+              <p class="message">Don't have an account?<a href="{{url_for('register')}}"> Sign Up here </a></p>
         </form>
       </div>
     </div>
