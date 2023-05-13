@@ -1,17 +1,28 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request , redirect , url_for , session
+from flask_login import UserMixin, LoginManager
+from flask_sqlalchemy import SQLAlchemy
+import time
+import multiprocessing as mp
+import serial
+import flask_bcrypt as Bcrypt
+from flask_mysqldb import MySQL
+import MySQLdb.cursors
+import re
+import data_processing
 
-app = Flask(__name__)
+massage = [0] * 13
+#serial communication initialization
+ser = serial.Serial('/dev/ttyACM0', 9600, timeout=1)
+time.sleep(3)
+ser.reset_input_buffer()
+print("serial communication initialized")
+while True:
+   if ser.inWaiting() > 0:
+      line = ser.readline()
+      line = str(line)
+      line = line[2:-5]
+      line = line.split("--")
+      for i in range(13):
+         massage[i] = line[i]
+         print(massage)
 
-@app.route("/")
-def index():
-    return render_template('test.html')
-
-@app.route("/checkboxes", methods=['POST'])
-def handle_checkboxes():
-    checkboxes_values = request.form.getlist('my_checkbox')
-    for value in checkboxes_values:
-        print(value)
-    return ''
-
-if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=80, debug=True)

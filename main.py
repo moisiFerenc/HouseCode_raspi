@@ -33,11 +33,13 @@ DEBUGGING_1 = False
 
 # read the string from the arduino
 RAWmessage = " "
-massage = [0] * 12
+massage = [0] * 13
 
 #serial communication initialization
-ser = serial.Serial('/dev/ttyACM0', 9600)
-
+ser = serial.Serial('/dev/ttyACM0', 9600, timeout=1)
+time.sleep(3)
+ser.reset_input_buffer()
+print("serial communication initialized")
 
 
 def readArduino():
@@ -45,15 +47,13 @@ def readArduino():
         for i in range(13):
             massage[i] = 2
     else:
-
-        #while True:
         if ser.inWaiting() > 0:
             line = ser.readline()
             line = str(line)
             line = line[2:-5]
             line = line.split("--")
             for i in range(13):
-                massage[i] = line[i]
+                massage[i] = int(line[i])
 
 
 
@@ -89,7 +89,7 @@ def login():
             session['id'] = account['id']
             session['username'] = account['username']
             msg = 'Logged in successfully !'
-            return render_template('controlpanel.html', msg = msg)
+            return redirect(url_for('controlpanel'))
         else:
             if DEBUGGING:
                 print("DEBUGGING: else")
@@ -170,16 +170,16 @@ def controlpanel(debug=True):
     door_state = massage[10]
     solar_panel_state = massage[11]
     motion_sensor_state = massage[12]
-    if DEBUGGING:
-        print(massage[13])
-    return render_template("controlpanel.html", ultrasonic_sensor_var = ultrasonic_sensor_val, humidity_sensor = humidity_sensor,  photo_resistor_var = photo_resistor_val, temperature_F_var = temperature_F_val, temperature_var = temperature_val, lamp_1_state_var = lamp_1_state, lamp_2_state_var = lamp_2_state,  lamp_3_state_var = lamp_3_state, air_conditioner_state_var = air_conditioner_state, garage_door_state_var = garage_door_state, door_state_var = door_state, solar_panel_state_var = solar_panel_state, motion_sensor_state_var = motion_sensor_state)
+
+    return render_template('controlpanel.html',user=session['username'],temperature_var=temperature_val ,humidity_sensor=humidity_sensor,photo_resistor_val=photo_resistor_val,temperature_F_var=temperature_F_val,solar_panel_state_var=solar_panel_state)
 
 @app.route("/checkboxes", methods=['POST'])
 def handle_checkboxes():
-    checkboxes_values = request.form.getlist('my_checkbox')
     if DEBUGGING:
-        print(checkboxes_values)
-    data_processing.checkbox_hanfeling(checkboxes_values)
+        print(request.form.getlist('my_checkbox'))
+    my_checkbox = request.form.getlist('my_checkbox')
+    data_processing.checkbox_hanfeling(my_checkbox)
+
     return ''
 
 if __name__ == "__main__":
