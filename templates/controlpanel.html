@@ -91,7 +91,68 @@
           input[type=checkbox]:checked {
             background: #09f;
           }
-  
+
+          /* Default button styles */
+          .submit-button {
+            background-color: #1a008f;
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            transition-duration: 0.4s;
+            border-radius: 12px;
+          }
+
+          /* Button hover styles */
+          .submit-button:hover {
+            background-color: #c8c8c8;
+            border: none;
+          }
+
+          /* Header styles */
+          .header {
+            font-size: 64px;
+            font-weight: bold;
+            font-family: 'Niconne', cursive;
+            color: #e0d6e9;
+            text-shadow: 2px 2px 0px #957dad,
+                         4px 4px 0px #ee4b2b,
+                         6px 6px 0px #00c2cb,
+                         8px 8px 0px #ff7f50,
+                         10px 10px 0px #553c9a;
+            text-align: center;
+          }
+
+          .logout-button {
+          text-shadow: 0px 0px 0px #957dad,
+                         1px 1px 0px #ee4b2b,
+                         2px 2px 0px #00c2cb,
+                         3px 3px 0px #ff7f50,
+                         4px 4px 0px #553c9a;
+            font-size: 30px;
+            background-color: #1a008f;
+            color: #0000;
+            border-color: #ffffff;
+            border-radius: 8px;
+            padding: 10px 20px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+          }
+
+          .logout-button:hover {
+            background-color: #ffffff;
+          }
+
+
+
+
+
+
         /* tablazatok */
       </style>
       <script>
@@ -105,9 +166,14 @@
       </script>
     </head>
     <body>
+      <button class="logout-button" onclick="logoutFunction()">
+        <span class="logout-icon"></span>
+          Logout
+      </button>
+
       <!-- HouseCode Controll center ase a title -->
-      <h1>HouseCode Control Center</h1>
-      <h2>Hello back {{ user }} !</h2>
+      <!--<h1>HouseCode Control Center</h1>-->
+      <h2 class="header">Hello back {{ user }} !</h2>
       <div class="login-page">
         <div class="form">
           <form class="login-form" onsubmit="return handleFormSubmit(this)">
@@ -134,75 +200,46 @@
                 </thead>
                 <tbody>
                   <tr>
-                    <td class="tg-0lax">Zarak:</td>
                     <td class="tg-0lax">Bejarati ajto</td>
                     <td class="tg-0lax"><input type="checkbox" name="my_checkbox" id="bejaratiajto" value="0"></td>
                   </tr>
-                  <tr>
-                    <td class="tg-0lax"></td>
-                    <td class="tg-0lax">Garazsajto</td>
-                    <td class="tg-0lax"><input type="checkbox" name="my_checkbox" id="garazsajto" value="1"></td>
-                  </tr>
                   
                   <tr>
-                    <td class="tg-0lax">Fenyek:</td>
                     <td class="tg-0lax">Nappali</td>
-                    <td class="tg-0lax"><input type="checkbox" name="my_checkbox" id="Nappali_lampa" value="2"></td>
+                    <td class="tg-0lax"><input type="checkbox" name="my_checkbox" id="Nappali_lampa" value="3"></td>
                   </tr>
                   <tr>
-                    <td class="tg-0lax"></td>
-                    <td class="tg-0lax">Konyha</td>
-                    <td class="tg-0lax"><input type="checkbox" name="my_checkbox" id="konyha_lampa" value="3"></td>
-                  </tr>
-                  <tr>
-                    <td class="tg-0lax"></td>
                     <td class="tg-0lax">Szoba</td>
                     <td class="tg-0lax"><input type="checkbox" name="my_checkbox" id="szoba_lampa" value="4"></td>
                   </tr>
                   <tr>
-                    <td class="tg-0lax"></td>
-                    <td class="tg-0lax">Osszes kikapcsolasa</td>
-                    <td class="tg-0lax"><input type="checkbox" name="my_checkbox" id="kikapcs_mind_lampa" value="5"></td>
-                  </tr>
-                  <tr>
-                    <td class="tg-0lax"></td>
-                    <td class="tg-0lax">Osszes Bekapcsolas</td>
-                    <td class="tg-0lax"><input type="checkbox" name="my_checkbox" id="bekapcs_mind_lampa" value="6"></td>
-                  </tr>
-                  <tr>
-                    <td class="tg-0lax">Homerseklet:</td>
                     <td class="tg-0lax">Aktualis Homerseklet</td>
                     <td class="tg-0lax">{{ temperature_var }}🌡️</td>
                   </tr>
                   <tr>
-                    <td class="tg-0lax"></td>
                     <td class="tg-0lax">Paratartalom</td>
                     <td class="tg-0lax">{{ humidity_sensor }}%💨</td>
                   </tr>
                   <tr>
-                    <td class="tg-0lax"></td>
                     <td class="tg-0lax">Szoba fenyessege</td>
                     <td class="tg-0lax">{{ photo_resistor_val }}☀️</td>
                   </tr>
                   <tr>
-                    <td class="tg-0lax"></td>
                     <td class="tg-0lax">Ventillator statusz</td>
                     <td class="tg-0lax"><input type="checkbox" name="my_checkbox" id="dc_motor" value="7"></td>
+                    <td class="tg-0lax">{{ AC_status }}></td>
                   </tr>
                   <tr>
-                    <td class="tg-0lax">Napelem statusz:</td>
                     <td class="tg-0lax">Akkumlator toltottsege</td>
                     <td class="tg-0lax">{{ temperature_F_var }}</td>
                   </tr>
-                  <tr>
-                    <td class="tg-0lax"></td>
-                    <td class="tg-0lax">panel doles szoge</td>
-                    <td class="tg-0lax">{{ solar_panel_state_var  }}°🌓</td>
-                  </tr>
+
                 </tbody>
                 </table>
-                  
-                <button type="submit">Submit</button>
+            <br>
+            <br>
+            <br>
+                <button class="submit-button" type="submit">Submit</button>
           </form>
         </div>
       </div>
