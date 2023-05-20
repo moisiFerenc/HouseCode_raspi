@@ -27,11 +27,4 @@ def send_email(sender_email, sender_password, recipient_email, subject, message)
     # Kijelentkezés és kapcsolat bezárása
     server.quit()
 
-# Példa használat
-sender_email = 'your_email@gmail.com'
-sender_password = 'your_password'
-recipient_email = 'recipient_email@example.com'
-subject = 'Teszt üzenet'
-message = 'Ez egy teszt üzenet.'
 
-#send_email(sender_email, sender_password, recipient_email, subject, message)

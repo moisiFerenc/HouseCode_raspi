@@ -166,10 +166,8 @@
       </script>
     </head>
     <body>
-      <button class="logout-button" onclick="logoutFunction()">
-        <span class="logout-icon"></span>
-          Logout
-      </button>
+      <a class="logout-button" href="{{ url_for('logout') }}">logout</a>
+
 
       <!-- HouseCode Controll center ase a title -->
       <!--<h1>HouseCode Control Center</h1>-->
@@ -206,11 +204,11 @@
                   
                   <tr>
                     <td class="tg-0lax">Nappali</td>
-                    <td class="tg-0lax"><input type="checkbox" name="my_checkbox" id="Nappali_lampa" value="3"></td>
+                    <td class="tg-0lax"><input type="checkbox" name="my_checkbox" id="Nappali_lampa" value="1"></td>
                   </tr>
                   <tr>
                     <td class="tg-0lax">Szoba</td>
-                    <td class="tg-0lax"><input type="checkbox" name="my_checkbox" id="szoba_lampa" value="4"></td>
+                    <td class="tg-0lax"><input type="checkbox" name="my_checkbox" id="szoba_lampa" value="2"></td>
                   </tr>
                   <tr>
                     <td class="tg-0lax">Aktualis Homerseklet</td>
@@ -226,7 +224,7 @@
                   </tr>
                   <tr>
                     <td class="tg-0lax">Ventillator statusz</td>
-                    <td class="tg-0lax"><input type="checkbox" name="my_checkbox" id="dc_motor" value="7"></td>
+                    <td class="tg-0lax"><input type="checkbox" name="my_checkbox" id="dc_motor" value="3"></td>
                     <td class="tg-0lax">{{ AC_status }}></td>
                   </tr>
                   <tr>
