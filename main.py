@@ -15,47 +15,27 @@
 #####################################################################
 
 from flask import Flask, render_template, request , redirect , url_for , session
-from flask_login import UserMixin, LoginManager
-from flask_sqlalchemy import SQLAlchemy
 import time
-import multiprocessing as mp
 import serial
-import flask_bcrypt as Bcrypt
 from flask_mysqldb import MySQL
 import MySQLdb.cursors
 import re
 import data_processing
+from pyngrok import ngrok
 
 #DEBUG MODE
 DEBUGGING = True
-DEBUGGING_1 = False
-
+DEBUGGING_1 = True
+WORD_WIDE_FLAG = False
 
 # read the string from the arduino
 RAWmessage = " "
-massage = [0] * 13
+massage = [0] * 5
 
 #serial communication initialization
 ser = serial.Serial('/dev/ttyACM0', 9600, timeout=1)
 time.sleep(3)
-ser.reset_input_buffer()
 print("serial communication initialized")
-
-
-def readArduino():
-    if DEBUGGING_1:
-        for i in range(13):
-            massage[i] = 2
-    else:
-        if ser.inWaiting() > 0:
-            line = ser.readline()
-            line = str(line)
-            line = line[2:-5]
-            line = line.split("--")
-            for i in range(13):
-                massage[i] = int(line[i])
-
-
 
 
 app = Flask(__name__)
@@ -68,6 +48,23 @@ app.config['MYSQL_PASSWORD'] = 'password'
 app.config['MYSQL_DB'] = 'houselogin'
 
 mysql = MySQL(app)
+
+
+def readArduino():
+    if DEBUGGING_1:
+        for i in range(5):
+            massage[i] = 2
+    else:
+        if ser.inWaiting() > 0:
+            line = ser.readline()
+            line = str(line)
+            line = line[2:-5]
+            line = line.split("--")
+            for i in range(5):
+                massage[i] = line[i]
+
+
+
 
 
 @app.route('/')
@@ -89,6 +86,7 @@ def login():
             session['id'] = account['id']
             session['username'] = account['username']
             msg = 'Logged in successfully !'
+
             return redirect(url_for('controlpanel'))
         else:
             if DEBUGGING:
@@ -155,23 +153,19 @@ def register():
 
 @app.route("/controlpanel")
 def controlpanel(debug=True):
+
+    if session['username'] == None:
+        return '<h1>Acces denied</h1>'
+
     readArduino()
 
-    ultrasonic_sensor_val = massage[0]
-    photo_resistor_val = massage[1]
-    temperature_val = massage[2]
-    humidity_sensor = massage[3]
-    temperature_F_val = massage[4]
-    lamp_1_state = massage[5]
-    lamp_2_state = massage[6]
-    lamp_3_state = massage[7]
-    air_conditioner_state = massage[8]
-    garage_door_state = massage[9]
-    door_state = massage[10]
-    solar_panel_state = massage[11]
-    motion_sensor_state = massage[12]
+    photo_resistor_val = massage[0]
+    temperature_val = massage[1]
+    humidity_sensor = massage[2]
+    air_conditioner_state = massage[3]
+    solar_panel_state = massage[4]
 
-    return render_template('controlpanel.html',user=session['username'],temperature_var=temperature_val ,humidity_sensor=humidity_sensor,photo_resistor_val=photo_resistor_val,temperature_F_var=temperature_F_val,solar_panel_state_var=solar_panel_state)
+    return render_template('controlpanel.html',user=session['username'],temperature_var=temperature_val ,humidity_sensor=humidity_sensor,photo_resistor_val=photo_resistor_val,solar_panel_state_var=solar_panel_state)
 
 @app.route("/checkboxes", methods=['POST'])
 def handle_checkboxes():
@@ -183,5 +177,8 @@ def handle_checkboxes():
     return ''
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    if WORD_WIDE_FLAG:
+        url = ngrok.connect(5001, "http", bind_tls=True)  # Connect ngrok to port 5001 with HTTPS
+        print(f"ngrok URL: {url}")
+    app.run(host='0.0.0.0', port=5001)
 
